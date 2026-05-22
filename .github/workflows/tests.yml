@@ -1,0 +1,36 @@
+name: Tests
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  style-and-audit:
+    name: brew style + audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Run brew style on Formula/
+        run: |
+          if compgen -G "Formula/*.rb" > /dev/null; then
+            brew style ./Formula/
+          else
+            echo "No formulas in Formula/ yet — skipping brew style."
+          fi
+
+      - name: Run brew audit on Formula/
+        run: |
+          if compgen -G "Formula/*.rb" > /dev/null; then
+            brew audit --strict --online ./Formula/*.rb
+          else
+            echo "No formulas in Formula/ yet — skipping brew audit."
+          fi
