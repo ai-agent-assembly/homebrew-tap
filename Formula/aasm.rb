@@ -29,4 +29,8 @@ class Aasm < Formula
   def install
     bin.install "aasm"
   end
+
+  test do
+    assert_match(/aasm/i, shell_output("#{bin}/aasm --version"))
+  end
 end
