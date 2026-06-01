@@ -1,28 +1,28 @@
 class Aasm < Formula
   desc "Agent Assembly CLI for the aasm runtime and dashboard"
   homepage "https://github.com/AI-agent-assembly/agent-assembly"
-  version "0.0.1-alpha.1"
+  version "0.0.1-alpha.2"
   license "MIT"
 
   on_macos do
     on_arm do
       url "https://github.com/AI-agent-assembly/agent-assembly/releases/download/v#{version}/aasm-aarch64-apple-darwin.tar.gz"
-      sha256 "c12d4a6ae0a66c8a1670e93c8c039efa8a0cd721c148da9096ff193462912dab"
+      sha256 "e8089ba79ad8b7f780b197f31be8a2dbe1c44a682d35fffe98cb6eb9d3d5b701"
     end
     on_intel do
       url "https://github.com/AI-agent-assembly/agent-assembly/releases/download/v#{version}/aasm-x86_64-apple-darwin.tar.gz"
-      sha256 "11c2ca50ec4738796ef9d3a2dc12cc12f900be2e40dcb8976ef5755f02996030"
+      sha256 "d82d604d2bd43de3cb6e7d9bf2b3a214a43806263356a9ddf9269e4e51bc7c29"
     end
   end
 
   on_linux do
     on_arm do
       url "https://github.com/AI-agent-assembly/agent-assembly/releases/download/v#{version}/aasm-aarch64-unknown-linux-gnu.tar.gz"
-      sha256 "6abc2b9ebb6020c45dde7664e3e7c50b9450320e077431730c44dc7a2f3556fc"
+      sha256 "530f9a542d9b6be2312cc09eb0591023edd7926e53cb92f98c36a0706e2a7613"
     end
     on_intel do
       url "https://github.com/AI-agent-assembly/agent-assembly/releases/download/v#{version}/aasm-x86_64-unknown-linux-gnu.tar.gz"
-      sha256 "ddc9a741da7599a83709fad683c1d232831c1658de24fd759b31e2035a36e3a6"
+      sha256 "cff9dae8c4235f5d35d09a85b627f8e61c7d507d5fe011a49f7b33aaf8c9e169"
     end
   end
 
