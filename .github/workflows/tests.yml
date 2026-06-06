@@ -4,6 +4,9 @@ on:
   push:
     branches: [master]
   pull_request:
+    paths:
+      - "Formula/**"
+      - ".github/workflows/tests.yml"
   workflow_dispatch:
 
 permissions:
@@ -12,6 +15,7 @@ permissions:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
 jobs:
   style-and-audit:
     name: brew style + audit
