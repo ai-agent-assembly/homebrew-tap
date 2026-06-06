@@ -4,10 +4,17 @@ on:
   push:
     branches: [master]
   pull_request:
+    paths:
+      - "Formula/**"
+      - ".github/workflows/tests.yml"
   workflow_dispatch:
 
 permissions:
   contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   style-and-audit:
@@ -39,4 +46,28 @@ jobs:
             brew audit --strict --tap agent-assembly/agent-assembly
           else
             echo "No formulas in Formula/ yet — skipping brew audit."
+          fi
+
+  install-and-test-macos:
+    name: brew install + test (macOS)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@2ebcf16054461267868620b1414507f3ccc765c1  # master
+
+      - name: Symlink checkout as the agent-assembly/agent-assembly tap
+        run: |
+          TAP_DIR="$(brew --repository)/Library/Taps/agent-assembly/homebrew-agent-assembly"
+          mkdir -p "$(dirname "$TAP_DIR")"
+          ln -sfn "$GITHUB_WORKSPACE" "$TAP_DIR"
+
+      - name: Install and test the formula
+        run: |
+          if compgen -G "Formula/*.rb" > /dev/null; then
+            brew install --verbose agent-assembly/agent-assembly/aasm
+            brew test agent-assembly/agent-assembly/aasm
+          else
+            echo "No formulas in Formula/ yet — skipping install/test."
           fi
