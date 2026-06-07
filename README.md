@@ -1,6 +1,6 @@
 # homebrew-agent-assembly
 
-[Homebrew](https://brew.sh/) tap for the [Agent Assembly](https://github.com/AI-agent-assembly/agent-assembly) `aasm` CLI.
+[Homebrew](https://brew.sh/) tap for the [Agent Assembly](https://github.com/ai-agent-assembly/agent-assembly) `aasm` CLI.
 
 ## Install
 
@@ -25,7 +25,7 @@ brew install agent-assembly/agent-assembly/aasm
 | Linux   | ARM64                    | `aarch64-unknown-linux-gnu`    |
 
 The formula resolves to a pre-built binary published to the
-[Agent Assembly GitHub Releases](https://github.com/AI-agent-assembly/agent-assembly/releases)
+[Agent Assembly GitHub Releases](https://github.com/ai-agent-assembly/agent-assembly/releases)
 for your platform.
 
 ## Upgrade
