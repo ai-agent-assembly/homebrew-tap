@@ -14,7 +14,7 @@ Brief description of the changes made in this PR.
 ## Related Issues
 
 - Related Jira ticket: AAASM-XX
-- Related upstream PR (if any): AI-agent-assembly/agent-assembly#XX
+- Related upstream PR (if any): ai-agent-assembly/agent-assembly#XX
 
 ## Checklist
 
