@@ -83,10 +83,36 @@ jobs:
           ln -sfn "$GITHUB_WORKSPACE" "$TAP_DIR"
 
       - name: Install and test the formula
+        id: install
         run: |
           if compgen -G "Formula/*.rb" > /dev/null; then
-            brew install --verbose agent-assembly/agent-assembly/aasm
+            brew install --verbose --debug agent-assembly/agent-assembly/aasm 2>&1
             brew test agent-assembly/agent-assembly/aasm
           else
             echo "No formulas in Formula/ yet — skipping install/test."
           fi
+
+      - name: Dump sandbox log on failure (AAASM-2871 debug)
+        if: failure() && steps.install.conclusion == 'failure'
+        run: |
+          echo "=== formula logs dir ==="
+          ls -la "$(brew --prefix)/var/log/aasm/" 2>/dev/null || echo "(no log dir)"
+          echo ""
+          echo "=== build.sandbox.log ==="
+          cat "$(brew --prefix)/var/log/aasm/build.sandbox.log" 2>/dev/null || echo "(no sandbox log)"
+          echo ""
+          echo "=== any other log files ==="
+          find "$(brew --prefix)/var/log/aasm/" -type f 2>/dev/null | head -20 | while read f; do
+            echo "--- $f ---"
+            cat "$f"
+            echo
+          done
+          echo ""
+          echo "=== Homebrew version ==="
+          brew --version
+          echo ""
+          echo "=== system_profiler (sandbox-exec context) ==="
+          sw_vers
+          uname -a
+          which sandbox-exec
+          ls -la /usr/bin/sandbox-exec
