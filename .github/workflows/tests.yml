@@ -50,17 +50,26 @@ jobs:
 
   install-and-test-macos:
     name: brew install + test (macOS)
-    runs-on: macos-latest
-    # AAASM-2871: the macos-latest runner's stricter sandbox-exec policy
-    # silently kills the Ruby build subprocess (~1.2s after "Installing aasm")
-    # with zero stdout/stderr produced. The formula's install block is a
-    # trivial `bin.install "aasm"` (binary tarball, no compilation), so the
-    # sandbox adds no defense-in-depth here — only blocks the file copy.
-    # Disabling matches the standard fix used by many binary-tarball taps.
-    # (Supersedes AAASM-2792's incorrect attempt to fix this via build-profile
-    # changes upstream — those couldn't affect install-time behavior.)
-    env:
-      HOMEBREW_NO_SANDBOX: 1
+    # AAASM-2871: pin to macos-14 instead of macos-latest.
+    #
+    # The macos-latest label moved from macos-14 to macos-15 (Sequoia)
+    # around 2026-06-08. macos-15's stricter sandbox-exec policy kills
+    # the Homebrew `build.rb` subprocess silently — ~1.2s after
+    # "Installing aasm", zero stdout/stderr, exit code 1. Confirmed by
+    # CI run history: every tap run before 2026-06-08 succeeded on
+    # macos-latest; every run on or after has failed identically.
+    #
+    # There is no env-var workaround on macOS. HOMEBREW_NO_SANDBOX only
+    # ever existed for Cask + Linux (Library/Homebrew/env_config.rb);
+    # OS::Mac::Sandbox.available? just checks `/usr/bin/sandbox-exec`
+    # exists, so the macOS build sandbox is unconditional once Homebrew
+    # decides to use it.
+    #
+    # Revisit once Homebrew patches the macos-15 sandbox profile.
+    # Supersedes AAASM-2792 (which targeted the wrong workflow — the
+    # formula installs a pre-built binary so source build profiles
+    # don't apply).
+    runs-on: macos-14
     steps:
       - uses: actions/checkout@v6
 
