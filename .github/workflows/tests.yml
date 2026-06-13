@@ -50,31 +50,33 @@ jobs:
 
   install-and-test-macos:
     name: brew install + test (macOS)
-    # AAASM-2871: pin to macos-14 instead of macos-latest.
-    #
-    # The macos-latest label moved from macos-14 to macos-15 (Sequoia)
-    # around 2026-06-08. macos-15's stricter sandbox-exec policy kills
-    # the Homebrew `build.rb` subprocess silently — ~1.2s after
-    # "Installing aasm", zero stdout/stderr, exit code 1. Confirmed by
-    # CI run history: every tap run before 2026-06-08 succeeded on
-    # macos-latest; every run on or after has failed identically.
-    #
-    # There is no env-var workaround on macOS. HOMEBREW_NO_SANDBOX only
-    # ever existed for Cask + Linux (Library/Homebrew/env_config.rb);
-    # OS::Mac::Sandbox.available? just checks `/usr/bin/sandbox-exec`
-    # exists, so the macOS build sandbox is unconditional once Homebrew
-    # decides to use it.
-    #
-    # Revisit once Homebrew patches the macos-15 sandbox profile.
-    # Supersedes AAASM-2792 (which targeted the wrong workflow — the
-    # formula installs a pre-built binary so source build profiles
-    # don't apply).
-    runs-on: macos-14
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v6
 
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@2ebcf16054461267868620b1414507f3ccc765c1  # master
+        with:
+          # AAASM-2871: pin Homebrew to the latest stable tag (6.0.1).
+          #
+          # Homebrew master HEAD broke macOS formula installs on
+          # 2026-06-08 via a sandbox refactor (commits 080ffb3d
+          # "sandbox: deny all of $HOME except Homebrew dirs", 2f1cb508
+          # "Route sandbox setup through brew setup-sandbox", etc.).
+          # The PTY.open path in sandbox.rb now exits 1 silently for
+          # binary-tarball formulas like ours. Every tap run before
+          # 2026-06-08 succeeded on master HEAD; every run after fails.
+          #
+          # `stable: true` overrides the default for tap repos
+          # (which is `stable: false` → master HEAD) and instead pins
+          # to the most recent Homebrew release tag — 6.0.1, cut
+          # 2026-06-12 01:00 UTC, which pre-dates the broken commits.
+          # Revisit once Homebrew ships a fix on a later tag.
+          #
+          # Supersedes AAASM-2792 (which targeted the upstream build
+          # profile — the formula installs a pre-built binary so
+          # source build flags don't apply).
+          stable: true
 
       - name: Symlink checkout as the agent-assembly/agent-assembly tap
         run: |
@@ -83,36 +85,10 @@ jobs:
           ln -sfn "$GITHUB_WORKSPACE" "$TAP_DIR"
 
       - name: Install and test the formula
-        id: install
         run: |
           if compgen -G "Formula/*.rb" > /dev/null; then
-            brew install --verbose --debug agent-assembly/agent-assembly/aasm 2>&1
+            brew install --verbose agent-assembly/agent-assembly/aasm
             brew test agent-assembly/agent-assembly/aasm
           else
             echo "No formulas in Formula/ yet — skipping install/test."
           fi
-
-      - name: Dump sandbox log on failure (AAASM-2871 debug)
-        if: failure() && steps.install.conclusion == 'failure'
-        run: |
-          echo "=== formula logs dir ==="
-          ls -la "$(brew --prefix)/var/log/aasm/" 2>/dev/null || echo "(no log dir)"
-          echo ""
-          echo "=== build.sandbox.log ==="
-          cat "$(brew --prefix)/var/log/aasm/build.sandbox.log" 2>/dev/null || echo "(no sandbox log)"
-          echo ""
-          echo "=== any other log files ==="
-          find "$(brew --prefix)/var/log/aasm/" -type f 2>/dev/null | head -20 | while read f; do
-            echo "--- $f ---"
-            cat "$f"
-            echo
-          done
-          echo ""
-          echo "=== Homebrew version ==="
-          brew --version
-          echo ""
-          echo "=== system_profiler (sandbox-exec context) ==="
-          sw_vers
-          uname -a
-          which sandbox-exec
-          ls -la /usr/bin/sandbox-exec
