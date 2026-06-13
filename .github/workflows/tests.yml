@@ -51,6 +51,16 @@ jobs:
   install-and-test-macos:
     name: brew install + test (macOS)
     runs-on: macos-latest
+    # AAASM-2871: the macos-latest runner's stricter sandbox-exec policy
+    # silently kills the Ruby build subprocess (~1.2s after "Installing aasm")
+    # with zero stdout/stderr produced. The formula's install block is a
+    # trivial `bin.install "aasm"` (binary tarball, no compilation), so the
+    # sandbox adds no defense-in-depth here — only blocks the file copy.
+    # Disabling matches the standard fix used by many binary-tarball taps.
+    # (Supersedes AAASM-2792's incorrect attempt to fix this via build-profile
+    # changes upstream — those couldn't affect install-time behavior.)
+    env:
+      HOMEBREW_NO_SANDBOX: 1
     steps:
       - uses: actions/checkout@v6
 
