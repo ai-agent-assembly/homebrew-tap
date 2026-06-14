@@ -51,6 +51,30 @@ jobs:
   install-and-test-macos:
     name: brew install + test (macOS)
     runs-on: macos-latest
+    # AAASM-2871: workaround for upstream Homebrew issue #22719
+    # https://github.com/Homebrew/brew/issues/22719
+    #
+    # As of 2026-06-12, the Homebrew build sandbox raises an
+    # UntrustedTapError silently inside `build.rb` because the
+    # sandboxed child can't read the tap's git remote URL via
+    # `git config --get remote.origin.url`. Failure surfaces only as
+    # `sandbox-exec ... exited with 1` with zero stdout/stderr;
+    # `--debug` reveals the swallowed UntrustedTapError stack.
+    # Affects every tap (GitHub-remote or otherwise) using the
+    # standard PR-time symlink-the-checkout-as-the-tap pattern.
+    #
+    # `HOMEBREW_NO_REQUIRE_TAP_TRUST=1` disables the parent-vs-child
+    # trust mismatch by skipping the trust check entirely. This is
+    # safe in CI: the tap content is the PR checkout we control;
+    # there's no third-party tap being executed. Brew itself
+    # documents this env in its own warning message when tap trust
+    # is the gate. Remove once Homebrew lands a fix for #22719.
+    #
+    # Supersedes AAASM-2792 (which targeted the upstream build
+    # profile — the formula installs a pre-built binary so source
+    # build flags don't apply at install time).
+    env:
+      HOMEBREW_NO_REQUIRE_TAP_TRUST: 1
     steps:
       - uses: actions/checkout@v6
 
