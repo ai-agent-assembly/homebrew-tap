@@ -21,10 +21,10 @@ jobs:
     name: brew style + audit
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
 
       - name: Set up Homebrew
-        uses: Homebrew/actions/setup-homebrew@master
+        uses: Homebrew/actions/setup-homebrew@2ebcf16054461267868620b1414507f3ccc765c1  # master
 
       - name: Symlink checkout as the agent-assembly/agent-assembly tap
         run: |
@@ -76,7 +76,7 @@ jobs:
     env:
       HOMEBREW_NO_REQUIRE_TAP_TRUST: 1
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
 
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@2ebcf16054461267868620b1414507f3ccc765c1  # master
