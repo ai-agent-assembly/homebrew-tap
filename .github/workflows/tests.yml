@@ -26,16 +26,16 @@ jobs:
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@2ebcf16054461267868620b1414507f3ccc765c1  # master
 
-      - name: Symlink checkout as the agent-assembly/agent-assembly tap
+      - name: Symlink checkout as the ai-agent-assembly/tap tap
         run: |
-          TAP_DIR="$(brew --repository)/Library/Taps/agent-assembly/homebrew-agent-assembly"
+          TAP_DIR="$(brew --repository)/Library/Taps/ai-agent-assembly/homebrew-tap"
           mkdir -p "$(dirname "$TAP_DIR")"
           ln -sfn "$GITHUB_WORKSPACE" "$TAP_DIR"
 
       - name: Run brew style on Formula/
         run: |
           if compgen -G "Formula/*.rb" > /dev/null; then
-            brew style agent-assembly/agent-assembly
+            brew style ai-agent-assembly/tap
           else
             echo "No formulas in Formula/ yet — skipping brew style."
           fi
@@ -43,7 +43,7 @@ jobs:
       - name: Run brew audit on Formula/
         run: |
           if compgen -G "Formula/*.rb" > /dev/null; then
-            brew audit --strict --tap agent-assembly/agent-assembly
+            brew audit --strict --tap ai-agent-assembly/tap
           else
             echo "No formulas in Formula/ yet — skipping brew audit."
           fi
@@ -81,17 +81,17 @@ jobs:
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@2ebcf16054461267868620b1414507f3ccc765c1  # master
 
-      - name: Symlink checkout as the agent-assembly/agent-assembly tap
+      - name: Symlink checkout as the ai-agent-assembly/tap tap
         run: |
-          TAP_DIR="$(brew --repository)/Library/Taps/agent-assembly/homebrew-agent-assembly"
+          TAP_DIR="$(brew --repository)/Library/Taps/ai-agent-assembly/homebrew-tap"
           mkdir -p "$(dirname "$TAP_DIR")"
           ln -sfn "$GITHUB_WORKSPACE" "$TAP_DIR"
 
       - name: Install and test the formula
         run: |
           if compgen -G "Formula/*.rb" > /dev/null; then
-            brew install --verbose agent-assembly/agent-assembly/aasm
-            brew test agent-assembly/agent-assembly/aasm
+            brew install --verbose ai-agent-assembly/tap/aasm
+            brew test ai-agent-assembly/tap/aasm
           else
             echo "No formulas in Formula/ yet — skipping install/test."
           fi
