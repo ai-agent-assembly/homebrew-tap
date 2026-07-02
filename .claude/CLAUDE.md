@@ -15,7 +15,7 @@ from the upstream [`agent-assembly` GitHub Releases](https://github.com/ai-agent
 and installs it onto your `PATH`. Nothing is compiled at install time.
 
 - **Layout:** formulae under `Formula/*.rb` (the file `aasm.rb` maps to formula `aasm`).
-- **Tap shorthand:** `ai-agent-assembly/agent-assembly` (Homebrew strips `homebrew-`).
+- **Tap shorthand:** `ai-agent-assembly/tap` (repo `homebrew-tap`; Homebrew strips `homebrew-`).
 - **License:** MIT (the core runtime is Apache-2.0).
 
 ## How version bumps / `sha256` / bottles land — release-driven
@@ -36,9 +36,9 @@ from `SHA256SUMS`, then opens a bot PR. Limit manual edits to `version`/`url`/`s
 
 ```sh
 brew style ./Formula/                                       # lint style
-brew audit --strict --tap ai-agent-assembly/agent-assembly  # strict audit (matches CI)
-brew install ai-agent-assembly/agent-assembly/aasm          # real install
-brew test  ai-agent-assembly/agent-assembly/aasm            # runs the formula's test block
+brew audit --strict --tap ai-agent-assembly/tap          # strict audit (matches CI)
+brew install ai-agent-assembly/tap/aasm                   # real install
+brew test  ai-agent-assembly/tap/aasm                    # runs the formula's test block
 ```
 
 CI (`.github/workflows/tests.yml`) runs `brew style` + `brew audit --strict` on

@@ -1,8 +1,8 @@
-# homebrew-agent-assembly
+# homebrew-tap
 
 > [Homebrew](https://brew.sh/) tap for the [Agent Assembly](https://github.com/ai-agent-assembly/agent-assembly) `aasm` CLI.
 
-[![Tests](https://github.com/ai-agent-assembly/homebrew-agent-assembly/actions/workflows/tests.yml/badge.svg)](https://github.com/ai-agent-assembly/homebrew-agent-assembly/actions/workflows/tests.yml)
+[![Tests](https://github.com/ai-agent-assembly/homebrew-tap/actions/workflows/tests.yml/badge.svg)](https://github.com/ai-agent-assembly/homebrew-tap/actions/workflows/tests.yml)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 This repository is the official Homebrew tap for installing the `aasm`
@@ -27,20 +27,32 @@ and installs it onto your `PATH`.
 ## Install
 
 ```sh
-brew tap ai-agent-assembly/agent-assembly
+brew install ai-agent-assembly/tap/aasm
+```
+
+Or tap once, then install by short name:
+
+```sh
+brew tap ai-agent-assembly/tap
 brew install aasm
 ```
 
-Or as a single command:
-
-```sh
-brew install ai-agent-assembly/agent-assembly/aasm
-```
-
 > [!IMPORTANT]
-> The tap shorthand is `ai-agent-assembly/agent-assembly` because the repository
-> is named `homebrew-agent-assembly` (Homebrew strips the `homebrew-` prefix).
-> The org id is lowercase **`ai-agent-assembly`** everywhere.
+> The canonical tap is **`ai-agent-assembly/tap`** — the repository is named
+> `homebrew-tap`, and Homebrew strips the `homebrew-` prefix. `aasm` installs the
+> **CLI only**; it never installs or starts a background runtime. The org id is
+> lowercase **`ai-agent-assembly`** everywhere.
+
+> [!NOTE]
+> **Migrating from the old tap name?** Earlier docs used
+> `brew install ai-agent-assembly/agent-assembly/aasm` (repo
+> `homebrew-agent-assembly`). That command still works — GitHub redirects the
+> renamed repository — but it is **deprecated**. Switch to
+> `ai-agent-assembly/tap/aasm`. To move an existing checkout:
+> ```sh
+> brew untap ai-agent-assembly/agent-assembly   # optional; old tap
+> brew install ai-agent-assembly/tap/aasm
+> ```
 
 Prefer a tap-less, dependency-free install? The upstream project also ships a
 `curl | sh` one-line installer. See the core repo's
@@ -97,7 +109,7 @@ beta build.
 
 ```sh
 brew uninstall aasm
-brew untap ai-agent-assembly/agent-assembly   # optional — removes the tap itself
+brew untap ai-agent-assembly/tap   # optional — removes the tap itself
 ```
 
 `brew uninstall` removes the `aasm` binary. The optional `brew untap` removes
@@ -107,14 +119,14 @@ the tap from your Homebrew installation.
 
 | Symptom | Likely cause and fix |
 | --- | --- |
-| `Error: No available formula with the name "aasm"` | The tap is not added. Run `brew tap ai-agent-assembly/agent-assembly` first, or use the fully-qualified `brew install ai-agent-assembly/agent-assembly/aasm`. |
-| `Error: aasm: ... SHA256 mismatch` | The local formula is stale or the release asset changed. Run `brew update`, then retry. If it persists, [open an issue](https://github.com/ai-agent-assembly/homebrew-agent-assembly/issues). |
+| `Error: No available formula with the name "aasm"` | The tap is not added. Run `brew tap ai-agent-assembly/tap` first, or use the fully-qualified `brew install ai-agent-assembly/tap/aasm`. |
+| `Error: aasm: ... SHA256 mismatch` | The local formula is stale or the release asset changed. Run `brew update`, then retry. If it persists, [open an issue](https://github.com/ai-agent-assembly/homebrew-tap/issues). |
 | `curl: ... 404` while downloading the bottle | The pinned release asset is missing or the tag was deleted upstream. Verify the formula's `version` against the [releases page](https://github.com/ai-agent-assembly/agent-assembly/releases). |
 | `aasm: command not found` after install | `brew --prefix`/bin is not on your `PATH`. Add it (e.g. `eval "$(brew shellenv)"`) and restart your shell. |
 | Install hangs or fails behind a proxy | GitHub Releases must be reachable. Set `HOMEBREW_GITHUB_API_TOKEN` and/or your proxy env vars (`HTTPS_PROXY`) and retry. |
 
 Still stuck? Collect `brew config` and `brew install --verbose aasm` output and
-[file an issue](https://github.com/ai-agent-assembly/homebrew-agent-assembly/issues).
+[file an issue](https://github.com/ai-agent-assembly/homebrew-tap/issues).
 
 ## Formula details
 
@@ -169,11 +181,11 @@ Contributors and CI run the standard Homebrew checks. To validate locally:
 brew style ./Formula/
 
 # Strict audit (matches CI)
-brew audit --strict --tap ai-agent-assembly/agent-assembly
+brew audit --strict --tap ai-agent-assembly/tap
 
 # Install + run the formula's own test block
-brew install ai-agent-assembly/agent-assembly/aasm
-brew test  ai-agent-assembly/agent-assembly/aasm
+brew install ai-agent-assembly/tap/aasm
+brew test  ai-agent-assembly/tap/aasm
 ```
 
 CI ([`.github/workflows/tests.yml`](.github/workflows/tests.yml)) runs
@@ -203,7 +215,7 @@ documentation. Please follow the
 - **Documentation site:** <https://ai-agent-assembly.github.io/agent-assembly-docs/>
 - **Release process:** [`agent-assembly` releases](https://github.com/ai-agent-assembly/agent-assembly/releases)
   and the upstream release workflow
-- **Issues / support:** <https://github.com/ai-agent-assembly/homebrew-agent-assembly/issues>
+- **Issues / support:** <https://github.com/ai-agent-assembly/homebrew-tap/issues>
 - **Security:** report vulnerabilities to **security@agent-assembly.dev**
   (see the org [security policy](https://github.com/ai-agent-assembly/.github/blob/master/SECURITY.md))
 
