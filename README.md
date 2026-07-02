@@ -8,10 +8,11 @@
 This repository is the official Homebrew tap for installing the `aasm`
 command-line tool — the operator front-end for the
 [Agent Assembly](https://github.com/ai-agent-assembly/agent-assembly)
-governance runtime. The tap exposes a single formula, `Formula/aasm.rb`, that
-downloads a pre-built `aasm` binary from the upstream
+governance runtime. The tap's default formula, `Formula/aasm.rb`, downloads a
+pre-built `aasm` binary from the upstream
 [GitHub Releases](https://github.com/ai-agent-assembly/agent-assembly/releases)
-and installs it onto your `PATH`.
+and installs it onto your `PATH`. Additional components — runtime, proxy, and
+eBPF — are separate formulae (see [Components](#components)).
 
 > [!NOTE]
 > **Current state — pre-release / bootstrap.**
@@ -61,6 +62,41 @@ section for the installer command, the install endpoint, and version pinning.
 (That installer endpoint is provisioned alongside the tap bootstrap under
 [AAASM-1201](https://lightning-dust-mite.atlassian.net/browse/AAASM-1201) and may
 not be live yet during the pre-release window.)
+
+## Components
+
+`aasm` installs the **CLI only**. Every other component is a separate formula, so
+you install exactly what you want and nothing starts automatically.
+
+| Formula | Installs | Platforms | Service |
+| --- | --- | --- | --- |
+| `aasm` | `aasm` CLI | macOS · Linux | — |
+| `aasm-runtime` | local runtime daemon | macOS · Linux | `brew services` (opt-in) |
+| `aasm-proxy` | sidecar proxy enforcement | macOS · Linux | — |
+| `aasm-ebpf` | eBPF kernel enforcement | **Linux only** | — |
+| `aasm-bundle` | CLI + runtime + proxy (meta) | macOS · Linux | — |
+
+```sh
+brew install ai-agent-assembly/tap/aasm-runtime
+brew install ai-agent-assembly/tap/aasm-proxy
+brew install ai-agent-assembly/tap/aasm-ebpf       # Linux only
+brew install ai-agent-assembly/tap/aasm-bundle     # convenience bundle
+```
+
+Installing `aasm-runtime` does **not** start it. Manage it explicitly with
+Homebrew services:
+
+```sh
+brew services start aasm-runtime
+brew services stop  aasm-runtime
+```
+
+> [!NOTE]
+> The runtime/proxy/eBPF/bundle formulae target the component-aware release
+> artifacts tracked under
+> [AAASM-3951](https://lightning-dust-mite.atlassian.net/browse/AAASM-3951). Their
+> `sha256` values are filled in by the release automation when the first component
+> artifacts ship; until then, only `aasm` (CLI) installs from a published artifact.
 
 ## Supported platforms
 
