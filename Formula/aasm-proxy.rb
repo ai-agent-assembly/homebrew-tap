@@ -29,10 +29,10 @@ class AasmProxy < Formula
   end
 
   def install
-    bin.install "aasm-proxy"
+    bin.install "aa-proxy"
   end
 
   test do
-    assert_match(/aasm-proxy/i, shell_output("#{bin}/aasm-proxy --version"))
+    assert_match(/aa-proxy/i, shell_output("#{bin}/aa-proxy --version"))
   end
 end
