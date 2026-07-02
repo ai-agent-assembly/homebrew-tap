@@ -29,19 +29,19 @@ class AasmRuntime < Formula
   end
 
   def install
-    bin.install "aasm-runtime"
+    bin.install "aa-runtime"
   end
 
   # Runtime is NOT started on install (ADR-014). Users opt in with
   # `brew services start aasm-runtime`.
   service do
-    run [opt_bin/"aasm-runtime"]
+    run [opt_bin/"aa-runtime"]
     keep_alive false
     log_path var/"log/aasm-runtime.log"
     error_log_path var/"log/aasm-runtime.log"
   end
 
   test do
-    assert_match(/aasm-runtime/i, shell_output("#{bin}/aasm-runtime --version"))
+    assert_match(/aa-runtime/i, shell_output("#{bin}/aa-runtime --version"))
   end
 end

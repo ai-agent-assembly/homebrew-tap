@@ -22,10 +22,10 @@ class AasmEbpf < Formula
   end
 
   def install
-    bin.install "aasm-ebpf"
+    bin.install "aa-ebpf"
   end
 
   test do
-    assert_match(/aasm-ebpf/i, shell_output("#{bin}/aasm-ebpf --version"))
+    assert_match(/aa-ebpf/i, shell_output("#{bin}/aa-ebpf --version"))
   end
 end
