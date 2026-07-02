@@ -21,7 +21,7 @@ class AasmBundle < Formula
 
   def install
     # Ship only a small manifest documenting what the bundle pulled in.
-    (pkgshare/"COMPONENTS").write "aasm aasm-runtime aasm-proxy\n"
+    (pkgshare/"COMPONENTS").write "aasm aa-runtime aa-proxy\n"
   end
 
   test do
