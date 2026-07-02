@@ -13,11 +13,11 @@ class AasmBundle < Formula
   # Meta/convenience formula: installs no binaries of its own; it pulls the
   # component formulae so `brew install aasm-bundle` sets up a local stack in one
   # step. eBPF is intentionally excluded (Linux-only, kernel-privileged) — install
-  # aasm-ebpf explicitly where supported. Tap-local names are unqualified so they
-  # resolve within whichever tap name this formula is installed under.
-  depends_on "aasm"
-  depends_on "aasm-proxy"
-  depends_on "aasm-runtime"
+  # aasm-ebpf explicitly where supported. Dependencies are tap-qualified so `brew
+  # audit` resolves them unambiguously to this tap's formulae.
+  depends_on "ai-agent-assembly/tap/aasm"
+  depends_on "ai-agent-assembly/tap/aasm-proxy"
+  depends_on "ai-agent-assembly/tap/aasm-runtime"
 
   def install
     # Ship only a small manifest documenting what the bundle pulled in.
