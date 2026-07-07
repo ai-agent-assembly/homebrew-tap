@@ -44,6 +44,6 @@ class AasmRuntime < Formula
   end
 
   test do
-    assert_match(/#{BINARY_NAME}/i, shell_output("#{bin}/#{BINARY_NAME} --version"))
+    assert_match BINARY_NAME, shell_output("#{bin}/#{BINARY_NAME} --version").downcase
   end
 end
