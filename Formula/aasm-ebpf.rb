@@ -7,9 +7,15 @@ class AasmEbpf < Formula
   # :linux makes the formula unavailable (rather than silently broken) on macOS.
   depends_on :linux
 
-  # Component-aware artifacts (ADR-014). The sha256 values below are placeholders
-  # resolved by the release automation when the first aasm-ebpf component artifact
-  # is published (AAASM-3951); they are not hand-maintained.
+  # Component-aware artifacts (ADR-014) — the url/sha256 pairs below are
+  # placeholders that AAASM-3951's release automation will fill in when the
+  # first aasm-ebpf component artifact is published. Until then the formula
+  # can't produce a working install, so it is disabled with a clear message
+  # rather than a checksum error. AAASM-3951 removes this disable! line.
+  disable! date: "2026-07-08",
+           because: "aasm-ebpf component artifacts are not yet published; pending release automation (AAASM-3951)"
+
+
   on_linux do
     on_arm do
       url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.2/aasm-ebpf-v0.0.1-rc.2-linux-arm64.tar.gz"
