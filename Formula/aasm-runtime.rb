@@ -10,9 +10,8 @@ class AasmRuntime < Formula
   # first aasm-runtime component artifact is published. Until then the formula
   # can't produce a working install, so it is disabled with a clear message
   # rather than a checksum error. AAASM-3951 removes this disable! line.
-  disable! date: "2026-07-08",
+  disable! date:    "2026-07-08",
            because: "aasm-runtime component artifacts are not yet published; pending release automation (AAASM-3951)"
-
 
   on_macos do
     on_arm do

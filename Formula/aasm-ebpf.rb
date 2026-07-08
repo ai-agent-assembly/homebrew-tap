@@ -5,6 +5,9 @@ class AasmEbpf < Formula
 
   # eBPF is kernel instrumentation and ships for Linux only (ADR-014). depends_on
   # :linux makes the formula unavailable (rather than silently broken) on macOS.
+  disable! date:    "2026-07-08",
+           because: "aasm-ebpf component artifacts are not yet published; pending release automation (AAASM-3951)"
+
   depends_on :linux
 
   # Component-aware artifacts (ADR-014) — the url/sha256 pairs below are
@@ -12,9 +15,6 @@ class AasmEbpf < Formula
   # first aasm-ebpf component artifact is published. Until then the formula
   # can't produce a working install, so it is disabled with a clear message
   # rather than a checksum error. AAASM-3951 removes this disable! line.
-  disable! date: "2026-07-08",
-           because: "aasm-ebpf component artifacts are not yet published; pending release automation (AAASM-3951)"
-
 
   on_linux do
     on_arm do
