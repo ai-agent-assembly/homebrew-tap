@@ -3,9 +3,15 @@ class AasmProxy < Formula
   homepage "https://github.com/ai-agent-assembly/agent-assembly"
   license "MIT"
 
-  # Component-aware artifacts (ADR-014). The sha256 values below are placeholders
-  # resolved by the release automation when the first aasm-proxy component
-  # artifact is published (AAASM-3951); they are not hand-maintained.
+  # Component-aware artifacts (ADR-014) — the url/sha256 pairs below are
+  # placeholders that AAASM-3951's release automation will fill in when the
+  # first aasm-proxy component artifact is published. Until then the formula
+  # can't produce a working install, so it is disabled with a clear message
+  # rather than a checksum error. AAASM-3951 removes this disable! line.
+  disable! date: "2026-07-08",
+           because: "aasm-proxy component artifacts are not yet published; pending release automation (AAASM-3951)"
+
+
   on_macos do
     on_arm do
       url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.2/aasm-proxy-v0.0.1-rc.2-darwin-arm64.tar.gz"
