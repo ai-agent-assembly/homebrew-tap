@@ -11,13 +11,13 @@ class AasmRuntime < Formula
   on_macos do
     on_arm do
       # BEGIN GENERATED: version
-      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.2/aasm-runtime-v0.0.1-rc.2-darwin-arm64.tar.gz"
+      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.3/aasm-runtime-v0.0.1-rc.3-darwin-arm64.tar.gz"
       # END GENERATED: version
       sha256 "1111111111111111111111111111111111111111111111111111111111111111"
     end
     on_intel do
       # BEGIN GENERATED: version
-      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.2/aasm-runtime-v0.0.1-rc.2-darwin-amd64.tar.gz"
+      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.3/aasm-runtime-v0.0.1-rc.3-darwin-amd64.tar.gz"
       # END GENERATED: version
       sha256 "2222222222222222222222222222222222222222222222222222222222222222"
     end
@@ -26,13 +26,13 @@ class AasmRuntime < Formula
   on_linux do
     on_arm do
       # BEGIN GENERATED: version
-      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.2/aasm-runtime-v0.0.1-rc.2-linux-arm64.tar.gz"
+      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.3/aasm-runtime-v0.0.1-rc.3-linux-arm64.tar.gz"
       # END GENERATED: version
       sha256 "3333333333333333333333333333333333333333333333333333333333333333"
     end
     on_intel do
       # BEGIN GENERATED: version
-      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.2/aasm-runtime-v0.0.1-rc.2-linux-amd64.tar.gz"
+      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.3/aasm-runtime-v0.0.1-rc.3-linux-amd64.tar.gz"
       # END GENERATED: version
       sha256 "4444444444444444444444444444444444444444444444444444444444444444"
     end

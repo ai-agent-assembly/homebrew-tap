@@ -9,13 +9,13 @@ class AasmProxy < Formula
   on_macos do
     on_arm do
       # BEGIN GENERATED: version
-      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.2/aasm-proxy-v0.0.1-rc.2-darwin-arm64.tar.gz"
+      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.3/aasm-proxy-v0.0.1-rc.3-darwin-arm64.tar.gz"
       # END GENERATED: version
       sha256 "5555555555555555555555555555555555555555555555555555555555555555"
     end
     on_intel do
       # BEGIN GENERATED: version
-      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.2/aasm-proxy-v0.0.1-rc.2-darwin-amd64.tar.gz"
+      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.3/aasm-proxy-v0.0.1-rc.3-darwin-amd64.tar.gz"
       # END GENERATED: version
       sha256 "6666666666666666666666666666666666666666666666666666666666666666"
     end
@@ -24,13 +24,13 @@ class AasmProxy < Formula
   on_linux do
     on_arm do
       # BEGIN GENERATED: version
-      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.2/aasm-proxy-v0.0.1-rc.2-linux-arm64.tar.gz"
+      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.3/aasm-proxy-v0.0.1-rc.3-linux-arm64.tar.gz"
       # END GENERATED: version
       sha256 "7777777777777777777777777777777777777777777777777777777777777777"
     end
     on_intel do
       # BEGIN GENERATED: version
-      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.2/aasm-proxy-v0.0.1-rc.2-linux-amd64.tar.gz"
+      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.3/aasm-proxy-v0.0.1-rc.3-linux-amd64.tar.gz"
       # END GENERATED: version
       sha256 "8888888888888888888888888888888888888888888888888888888888888888"
     end
