@@ -8,22 +8,30 @@ class AasmProxy < Formula
   # artifact is published (AAASM-3951); they are not hand-maintained.
   on_macos do
     on_arm do
+      # BEGIN GENERATED: version
       url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.2/aasm-proxy-v0.0.1-rc.2-darwin-arm64.tar.gz"
+      # END GENERATED: version
       sha256 "5555555555555555555555555555555555555555555555555555555555555555"
     end
     on_intel do
+      # BEGIN GENERATED: version
       url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.2/aasm-proxy-v0.0.1-rc.2-darwin-amd64.tar.gz"
+      # END GENERATED: version
       sha256 "6666666666666666666666666666666666666666666666666666666666666666"
     end
   end
 
   on_linux do
     on_arm do
+      # BEGIN GENERATED: version
       url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.2/aasm-proxy-v0.0.1-rc.2-linux-arm64.tar.gz"
+      # END GENERATED: version
       sha256 "7777777777777777777777777777777777777777777777777777777777777777"
     end
     on_intel do
+      # BEGIN GENERATED: version
       url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.2/aasm-proxy-v0.0.1-rc.2-linux-amd64.tar.gz"
+      # END GENERATED: version
       sha256 "8888888888888888888888888888888888888888888888888888888888888888"
     end
   end
