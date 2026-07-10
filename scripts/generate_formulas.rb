@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# typed: strict
 # frozen_string_literal: true
 
 # Rewrites the bounded `# BEGIN GENERATED: version` / `# END GENERATED: version`
@@ -26,135 +27,150 @@
 #     no diff. CI (`.github/workflows/formula-drift.yml`) enforces this by
 #     asserting `git diff --exit-code` after a fresh run.
 
-require "pathname"
+# Pathname must be required explicitly when this script runs standalone
+# (RuboCop 1.85+ still flags this as `Lint/RedundantRequireStatement` on the
+# assumption of a Bundler-loaded environment; the disable comment below scopes
+# the exception to this line only).
+require "pathname" # rubocop:disable Lint/RedundantRequireStatement
 
-REPO_ROOT = Pathname.new(__dir__).parent.expand_path
-FORMULA_DIR = REPO_ROOT.join("Formula")
-METADATA_FILE = REPO_ROOT.join("metadata", "versions.rb")
+# Wrapping the top-level constants and methods in a module keeps
+# `Style/TopLevelMethodDefinition` happy without changing the entrypoint
+# semantics — the `main if $PROGRAM_NAME == __FILE__` guard at the bottom of
+# the file still runs when this script is executed directly.
+module FormulaGenerator
+  REPO_ROOT = Pathname.new(__dir__).parent.expand_path.freeze
+  FORMULA_DIR = REPO_ROOT.join("Formula").freeze
+  METADATA_FILE = REPO_ROOT.join("metadata", "versions.rb").freeze
 
-BEGIN_MARKER = "# BEGIN GENERATED: version"
-END_MARKER = "# END GENERATED: version"
+  BEGIN_MARKER = "# BEGIN GENERATED: version"
+  END_MARKER = "# END GENERATED: version"
 
-# Load the SoT constants (VERSION, RELEASE_BASE_URL) from metadata/versions.rb.
-# We require the file rather than parsing it so that a syntax error in the SoT
-# surfaces here, before we touch any formula.
-require METADATA_FILE.to_s
-VERSION = AasmTapMetadata::VERSION
-RELEASE_BASE_URL = AasmTapMetadata::RELEASE_BASE_URL
+  # Load the SoT constants (VERSION, RELEASE_BASE_URL) from metadata/versions.rb.
+  # We require the file rather than parsing it so that a syntax error in the SoT
+  # surfaces here, before we touch any formula.
+  require METADATA_FILE.to_s
+  VERSION = AasmTapMetadata::VERSION
+  RELEASE_BASE_URL = AasmTapMetadata::RELEASE_BASE_URL
 
-# Rewrite the single managed line inside a sentinel region.
-#
-# The region is expected to contain exactly one non-blank, non-comment line —
-# either `version "..."` or `url "..."`. Any other shape is a hand-edit that
-# the generator refuses to guess at; we raise so CI fails loudly instead of
-# silently producing a bad formula.
-def rewrite_region(inner_lines, formula_path)
-  managed = inner_lines.reject { |l| l.strip.empty? || l.strip.start_with?("#") }
-  if managed.length != 1
-    raise "#{formula_path}: expected exactly 1 managed line between " \
-          "sentinels, found #{managed.length}: #{managed.inspect}"
-  end
-
-  line = managed.first
-  indent = line[/\A\s*/]
-
-  if line.strip.start_with?("version ")
-    ["#{indent}version \"#{VERSION}\"\n"]
-  elsif line.strip.start_with?("url ")
-    # Extract the quoted URL literal, then rewrite every `v<semver>` token
-    # inside it. Semver here is intentionally strict — `v<major>.<minor>.<patch>`
-    # optionally followed by a single dashed pre-release identifier of the shape
-    # `<alpha-word>` or `<alpha-word>.<digits>` (e.g. `rc`, `rc.2`, `beta.1`).
-    # This is deliberately tighter than the semver spec: it does NOT match
-    # `v#{version}` Ruby interpolations (kept intact for aasm.rb's URL style),
-    # and it will not greedily swallow file extensions like `.tar.gz` in
-    # component-artifact filenames such as `aasm-proxy-v0.0.1-rc.2.tar.gz`.
-    m = line.strip.match(/\Aurl\s+"(?<url>[^"]+)"\z/)
-    unless m
-      raise "#{formula_path}: url line does not match expected shape " \
-            "'url \"<url>\"': #{line.inspect}"
+  # Rewrite the single managed line inside a sentinel region.
+  #
+  # The region is expected to contain exactly one non-blank, non-comment line —
+  # either `version "..."` or `url "..."`. Any other shape is a hand-edit that
+  # the generator refuses to guess at; we raise so CI fails loudly instead of
+  # silently producing a bad formula.
+  def self.rewrite_region(inner_lines, formula_path)
+    managed = inner_lines.reject { |l| l.strip.empty? || l.strip.start_with?("#") }
+    if managed.length != 1
+      raise "#{formula_path}: expected exactly 1 managed line between " \
+            "sentinels, found #{managed.length}: #{managed.inspect}"
     end
-    semver_token = /v\d+\.\d+\.\d+(?:-[a-zA-Z]+(?:\.\d+)?)?/
-    original_url = m[:url]
-    if !semver_token.match?(original_url) && !original_url.include?("v\#{version}")
-      raise "#{formula_path}: url contains no rewritable v<semver> segment " \
-            "and no `v\#{version}` interpolation: #{original_url.inspect}"
-    end
-    new_url = original_url.gsub(semver_token, "v#{VERSION}")
-    ["#{indent}url \"#{new_url}\"\n"]
-  else
-    raise "#{formula_path}: unrecognized managed line inside sentinels: " \
-          "#{line.inspect} (expected `version` or `url`)"
-  end
-end
 
-# Walk one formula file, rewriting each sentinel region in place. Returns true
-# if the file was modified (used only for reporting; the drift check gates CI).
-def process_formula(path)
-  original = path.read
-  lines = original.lines
+    line = managed.first
+    indent = line[/\A\s*/]
 
-  out = []
-  i = 0
-  in_region = false
-  region_buf = []
-  region_start_line = nil
-
-  while i < lines.length
-    line = lines[i]
-    stripped = line.strip
-
-    if !in_region && stripped == BEGIN_MARKER
-      out << line
-      in_region = true
-      region_start_line = i + 1
-      region_buf = []
-    elsif in_region && stripped == END_MARKER
-      # Preserve the indentation of the original managed line by regenerating
-      # from the buffered inner lines. rewrite_region handles the leading
-      # whitespace.
-      out.concat(rewrite_region(region_buf, path))
-      out << line
-      in_region = false
-      region_buf = []
-    elsif in_region
-      region_buf << line
+    if line.strip.start_with?("version ")
+      ["#{indent}version \"#{VERSION}\"\n"]
+    elsif line.strip.start_with?("url ")
+      # Extract the quoted URL literal, then rewrite every `v<semver>` token
+      # inside it. Semver here is intentionally strict — `v<major>.<minor>.<patch>`
+      # optionally followed by a single dashed pre-release identifier of the shape
+      # `<alpha-word>` or `<alpha-word>.<digits>` (e.g. `rc`, `rc.2`, `beta.1`).
+      # This is deliberately tighter than the semver spec: it does NOT match
+      # `v#{version}` Ruby interpolations (kept intact for aasm.rb's URL style),
+      # and it will not greedily swallow file extensions like `.tar.gz` in
+      # component-artifact filenames such as `aasm-proxy-v0.0.1-rc.2.tar.gz`.
+      m = line.strip.match(/\Aurl\s+"(?<url>[^"]+)"\z/)
+      unless m
+        raise "#{formula_path}: url line does not match expected shape " \
+              "'url \"<url>\"': #{line.inspect}"
+      end
+      semver_token = /v\d+\.\d+\.\d+(?:-[a-zA-Z]+(?:\.\d+)?)?/
+      original_url = m[:url]
+      # `String#exclude?` (Homebrew/NegateInclude's suggested replacement) is
+      # an ActiveSupport addition loaded at brew-style time; this generator
+      # runs under vanilla Ruby (see CI: `ruby scripts/...`) so we can only
+      # rely on stdlib `.include?`. Disabling the cop here keeps the code
+      # portable across the two runtimes.
+      if !semver_token.match?(original_url) && !original_url.include?("v\#{version}") # rubocop:disable Homebrew/NegateInclude
+        raise "#{formula_path}: url contains no rewritable v<semver> segment " \
+              "and no `v\#{version}` interpolation: #{original_url.inspect}"
+      end
+      new_url = original_url.gsub(semver_token, "v#{VERSION}")
+      ["#{indent}url \"#{new_url}\"\n"]
     else
-      out << line
+      raise "#{formula_path}: unrecognized managed line inside sentinels: " \
+            "#{line.inspect} (expected `version` or `url`)"
     end
-    i += 1
   end
 
-  if in_region
-    raise "#{path}: unterminated `#{BEGIN_MARKER}` region " \
-          "starting at line #{region_start_line}"
+  # Walk one formula file, rewriting each sentinel region in place. Returns true
+  # if the file was modified (used only for reporting; the drift check gates CI).
+  def self.process_formula?(path)
+    original = path.read
+    lines = original.lines
+
+    out = []
+    i = 0
+    in_region = false
+    region_buf = []
+    region_start_line = nil
+
+    while i < lines.length
+      line = lines[i]
+      stripped = line.strip
+
+      if !in_region && stripped == BEGIN_MARKER
+        out << line
+        in_region = true
+        region_start_line = i + 1
+        region_buf = []
+      elsif in_region && stripped == END_MARKER
+        # Preserve the indentation of the original managed line by regenerating
+        # from the buffered inner lines. rewrite_region handles the leading
+        # whitespace.
+        out.concat(rewrite_region(region_buf, path))
+        out << line
+        in_region = false
+        region_buf = []
+      elsif in_region
+        region_buf << line
+      else
+        out << line
+      end
+      i += 1
+    end
+
+    if in_region
+      raise "#{path}: unterminated `#{BEGIN_MARKER}` region " \
+            "starting at line #{region_start_line}"
+    end
+
+    new_content = out.join
+    return false if new_content == original
+
+    path.write(new_content)
+    true
   end
 
-  new_content = out.join
-  return false if new_content == original
+  def self.main
+    formulas = FORMULA_DIR.children.select { |p| p.extname == ".rb" }.sort
+    if formulas.empty?
+      warn "No formulas found under #{FORMULA_DIR}"
+      exit 1
+    end
 
-  path.write(new_content)
-  true
+    changed = []
+    formulas.each do |formula|
+      changed << formula.relative_path_from(REPO_ROOT).to_s if process_formula?(formula)
+    end
+
+    if changed.empty?
+      puts "generate_formulas.rb: no changes (VERSION=#{VERSION})"
+    else
+      puts "generate_formulas.rb: regenerated #{changed.length} formula(s) at VERSION=#{VERSION}:"
+      changed.each { |c| puts "  #{c}" }
+    end
+  end
 end
 
-def main
-  formulas = FORMULA_DIR.children.select { |p| p.extname == ".rb" }.sort
-  if formulas.empty?
-    warn "No formulas found under #{FORMULA_DIR}"
-    exit 1
-  end
-
-  changed = []
-  formulas.each do |formula|
-    changed << formula.relative_path_from(REPO_ROOT).to_s if process_formula(formula)
-  end
-
-  if changed.empty?
-    puts "generate_formulas.rb: no changes (VERSION=#{VERSION})"
-  else
-    puts "generate_formulas.rb: regenerated #{changed.length} formula(s) at VERSION=#{VERSION}:"
-    changed.each { |c| puts "  #{c}" }
-  end
-end
-
-main if $PROGRAM_NAME == __FILE__
+FormulaGenerator.main if $PROGRAM_NAME == __FILE__

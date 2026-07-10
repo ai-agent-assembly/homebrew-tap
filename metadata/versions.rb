@@ -1,3 +1,4 @@
+# typed: strict
 # frozen_string_literal: true
 
 # Single source of truth for the tap's release version and artifact base URL.
