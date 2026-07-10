@@ -1,0 +1,49 @@
+name: Formula drift
+
+# Enforces that Formula/*.rb agree with metadata/versions.rb via
+# scripts/generate_formulas.rb. Runs the generator against the checked-out
+# tree and fails the job if it produces any diff — i.e. someone hand-edited
+# a formula's version or url segment without also bumping the SoT, or bumped
+# the SoT without regenerating. This is what caught the rc.2/rc.3 mismatch
+# behind AAASM-4354; keeping the check green prevents it from regressing.
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    paths:
+      - "Formula/**"
+      - "metadata/versions.rb"
+      - "scripts/generate_formulas.rb"
+      - ".github/workflows/formula-drift.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  drift-check:
+    name: Regenerate + assert clean diff
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+
+      # ubuntu-latest ships Ruby in the standard image; the generator uses
+      # only stdlib (Pathname, no gems) so no `bundle install` step is needed.
+      - name: Show Ruby version
+        run: ruby --version
+
+      - name: Regenerate formulas from metadata/versions.rb
+        run: ruby scripts/generate_formulas.rb
+
+      - name: Assert Formula/ is in sync with the SoT
+        run: |
+          if ! git diff --exit-code -- Formula/; then
+            echo "::error::Formula/ is out of sync with metadata/versions.rb."
+            echo "::error::Run 'ruby scripts/generate_formulas.rb' locally and commit the result."
+            exit 1
+          fi

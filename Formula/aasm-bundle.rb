@@ -6,7 +6,9 @@ class AasmBundle < Formula
   # AAASM-3951). The version is written literally (not interpolated) because the
   # url must appear before `version` in formula component order. The sha256 is a
   # placeholder resolved by the release automation and is not hand-maintained.
-  url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.2/aasm-bundle-v0.0.1-rc.2.tar.gz"
+  # BEGIN GENERATED: version
+  url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.3/aasm-bundle-v0.0.1-rc.3.tar.gz"
+  # END GENERATED: version
   sha256 "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
   license "MIT"
 

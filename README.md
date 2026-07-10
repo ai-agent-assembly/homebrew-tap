@@ -208,6 +208,29 @@ The formula's `url` and `sha256` lines must stay in lock-step with the upstream
 > same procedure. Manual edits should be limited to the `version`, `url`, and
 > `sha256` lines — the formula structure itself is stable.
 
+### Shared version SoT (AAASM-4354)
+
+The `version` field and `github.com/ai-agent-assembly/agent-assembly/releases/download/v<X>/…`
+URL fragments across every formula in this tap are generated from a single
+source of truth at [`metadata/versions.rb`](metadata/versions.rb). To bump the
+tap version:
+
+1. Edit `VERSION` in `metadata/versions.rb`.
+2. Run `ruby scripts/generate_formulas.rb` — this rewrites the bounded
+   `# BEGIN GENERATED: version` / `# END GENERATED: version` blocks in every
+   `Formula/*.rb`.
+3. Commit both the SoT change and the regenerated formulae together.
+4. The CI job [`.github/workflows/formula-drift.yml`](.github/workflows/formula-drift.yml)
+   re-runs the generator on every PR that touches `Formula/**` or the SoT and
+   fails if the tree is out of sync. This is what caught the `aasm-bundle` /
+   `aasm-proxy` / `aasm-ebpf` staying pinned at `v0.0.1-rc.2` while `aasm.rb`
+   moved to `v0.0.1-rc.3` — the exact drift class this generator prevents.
+
+Do **not** hand-edit the `version` line or `url` version fragment in any
+formula. Do hand-edit `sha256` values — those are release-artifact fingerprints
+that the release automation resolves and are intentionally outside the
+generator's scope.
+
 ## Formula validation
 
 Contributors and CI run the standard Homebrew checks. To validate locally:

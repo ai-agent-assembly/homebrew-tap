@@ -14,11 +14,15 @@ class AasmProxy < Formula
   # them without a matching upstream release.
   on_linux do
     on_arm do
+      # BEGIN GENERATED: version
       url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.3/aasm-proxy-v0.0.1-rc.3-linux-arm64.tar.gz"
+      # END GENERATED: version
       sha256 "1f7b95c71f05a3bb16baf398f66dcf2e7208efc783ff31c625634ad7b2ddecce"
     end
     on_intel do
+      # BEGIN GENERATED: version
       url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.3/aasm-proxy-v0.0.1-rc.3-linux-amd64.tar.gz"
+      # END GENERATED: version
       sha256 "60457171eaa499bcbfa0ce869aaf19865686851bcae5edf5fda62f7d335084c8"
     end
   end

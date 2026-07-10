@@ -22,11 +22,15 @@ class AasmEbpf < Formula
   # removed. Do not attempt to hand-maintain the sha values.
   on_linux do
     on_arm do
+      # BEGIN GENERATED: version
       url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.3/aasm-ebpf-v0.0.1-rc.3-linux-arm64.tar.gz"
+      # END GENERATED: version
       sha256 "9999999999999999999999999999999999999999999999999999999999999999"
     end
     on_intel do
+      # BEGIN GENERATED: version
       url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.3/aasm-ebpf-v0.0.1-rc.3-linux-amd64.tar.gz"
+      # END GENERATED: version
       sha256 "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
     end
   end
