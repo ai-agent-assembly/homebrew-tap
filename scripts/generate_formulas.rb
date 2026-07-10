@@ -15,11 +15,13 @@
 #     or `url "..."`. Everything outside the sentinels (including every
 #     `sha256` line) is preserved verbatim, because release automation owns the
 #     sha256 values and this generator must not touch them (AAASM-3951).
-#   * URL rewriting preserves the artifact filename (the last URL path segment)
-#     and only replaces the version segment `/v<OLD_VERSION>/`. Formulas that
-#     add or rename artifacts do so by editing the url line's artifact name
-#     between the sentinels — the generator will keep the edit and only fix
-#     the version segment on the next run.
+#   * URL rewriting is version-shaped: every `v<semver>` token in the URL is
+#     rewritten to `v<VERSION>`. This covers both the release-path segment
+#     (`.../releases/download/v<OLD>/...`) and the version embedded in
+#     component artifact filenames (`aasm-proxy-v<OLD>-darwin-arm64.tar.gz`).
+#     Non-version parts of the artifact name — the component prefix, the
+#     platform triple — are preserved, so a formula that renames an artifact
+#     inside its sentinel region will keep the rename on the next run.
 #   * The script is idempotent: running it twice against a clean tree produces
 #     no diff. CI (`.github/workflows/formula-drift.yml`) enforces this by
 #     asserting `git diff --exit-code` after a fresh run.
@@ -59,13 +61,23 @@ def rewrite_region(inner_lines, formula_path)
   if line.strip.start_with?("version ")
     ["#{indent}version \"#{VERSION}\"\n"]
   elsif line.strip.start_with?("url ")
-    # Match `url "<base>/v<anything>/<artifact-filename>"`.
-    m = line.match(/\Aurl\s+"(?<base>.+?)\/v[^\/"]+\/(?<artifact>[^"\/]+)"\s*\z/)
+    # Extract the quoted URL literal, then rewrite every `v<semver>` token
+    # inside it. Semver here is intentionally strict — three dot-separated
+    # digit groups plus an optional pre-release suffix — so it does not
+    # accidentally match `v#{version}` (Ruby interpolation), version-shaped
+    # substrings in a homepage tail, or a stray `v1` in a comment.
+    m = line.match(/\Aurl\s+"(?<url>[^"]+)"\s*\z/)
     unless m
       raise "#{formula_path}: url line does not match expected shape " \
-            "'url \"<base>/v<VERSION>/<artifact>\"': #{line.inspect}"
+            "'url \"<url>\"': #{line.inspect}"
     end
-    ["#{indent}url \"#{m[:base]}/v#{VERSION}/#{m[:artifact]}\"\n"]
+    semver_token = /v\d+\.\d+\.\d+(?:-[a-zA-Z0-9.]+)?/
+    new_url = m[:url].gsub(semver_token, "v#{VERSION}")
+    unless new_url.include?("v#{VERSION}")
+      raise "#{formula_path}: url has no v<semver> segment to rewrite; " \
+            "expected at least one occurrence in #{m[:url].inspect}"
+    end
+    ["#{indent}url \"#{new_url}\"\n"]
   else
     raise "#{formula_path}: unrecognized managed line inside sentinels: " \
           "#{line.inspect} (expected `version` or `url`)"
