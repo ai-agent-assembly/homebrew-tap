@@ -5,21 +5,21 @@ class AasmRuntime < Formula
   homepage "https://github.com/ai-agent-assembly/agent-assembly"
   license "MIT"
 
-  # Component-aware artifacts (ADR-014). The sha256 values below are placeholders
-  # resolved by the release automation when the first aasm-runtime component
-  # artifact is published (AAASM-3951); they are not hand-maintained.
+  # Component-aware artifacts (ADR-014 / AAASM-3951). sha256 values are copied
+  # from the release's SHA256SUMS by the release automation; do not hand-edit
+  # them without a matching upstream release.
   on_macos do
     on_arm do
       # BEGIN GENERATED: version
       url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.3/aasm-runtime-v0.0.1-rc.3-darwin-arm64.tar.gz"
       # END GENERATED: version
-      sha256 "1111111111111111111111111111111111111111111111111111111111111111"
+      sha256 "bcd2fd3c4aa6884d551b2671e2423bee7bc0336c6d5dc2f0449121cd7b1b784c"
     end
     on_intel do
       # BEGIN GENERATED: version
       url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.3/aasm-runtime-v0.0.1-rc.3-darwin-amd64.tar.gz"
       # END GENERATED: version
-      sha256 "2222222222222222222222222222222222222222222222222222222222222222"
+      sha256 "3e6a2371756cb41dcfdc71e9f0dafca2e44b8c0a6c558e2209edc5e7fc2ae24d"
     end
   end
 
@@ -28,13 +28,13 @@ class AasmRuntime < Formula
       # BEGIN GENERATED: version
       url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.3/aasm-runtime-v0.0.1-rc.3-linux-arm64.tar.gz"
       # END GENERATED: version
-      sha256 "3333333333333333333333333333333333333333333333333333333333333333"
+      sha256 "68f8459fd114e8a22ea23c4c919da185695d9aa72421f31bbca1149b652bfdcf"
     end
     on_intel do
       # BEGIN GENERATED: version
       url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.3/aasm-runtime-v0.0.1-rc.3-linux-amd64.tar.gz"
       # END GENERATED: version
-      sha256 "4444444444444444444444444444444444444444444444444444444444444444"
+      sha256 "2e2c0d33786dd12b7179cc9fa4b0f0ee937b19e3bcaab0cbe94b9d0134abd2b5"
     end
   end
 
