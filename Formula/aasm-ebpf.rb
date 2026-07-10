@@ -3,20 +3,30 @@ class AasmEbpf < Formula
   homepage "https://github.com/ai-agent-assembly/agent-assembly"
   license "MIT"
 
+  # AAASM-3951 shipped component-aware release artifacts for `cli`, `runtime`
+  # and `proxy`, but the ebpf variant is not yet packaged as an installable
+  # tar.gz — the release only publishes raw probe binaries (see the tag's
+  # EBPF_SHA256SUMS). Keep this formula visible in the tap as a scaffold so
+  # users discover the component exists, but disabled with a clear message
+  # instead of a 404 / checksum error. A follow-up will remove this block
+  # once ebpf tar.gz artifacts start shipping alongside runtime/proxy.
+  disable! date:    "2026-07-08",
+           because: "aasm-ebpf tar.gz artifacts are not yet published (only raw probe binaries ship today)"
+
   # eBPF is kernel instrumentation and ships for Linux only (ADR-014). depends_on
   # :linux makes the formula unavailable (rather than silently broken) on macOS.
   depends_on :linux
 
-  # Component-aware artifacts (ADR-014). The sha256 values below are placeholders
-  # resolved by the release automation when the first aasm-ebpf component artifact
-  # is published (AAASM-3951); they are not hand-maintained.
+  # url/sha256 pairs kept as placeholders — they will be filled in once the
+  # ebpf tar.gz artifacts start publishing and the disable! block above is
+  # removed. Do not attempt to hand-maintain the sha values.
   on_linux do
     on_arm do
-      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.2/aasm-ebpf-v0.0.1-rc.2-linux-arm64.tar.gz"
+      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.3/aasm-ebpf-v0.0.1-rc.3-linux-arm64.tar.gz"
       sha256 "9999999999999999999999999999999999999999999999999999999999999999"
     end
     on_intel do
-      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.2/aasm-ebpf-v0.0.1-rc.2-linux-amd64.tar.gz"
+      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.3/aasm-ebpf-v0.0.1-rc.3-linux-amd64.tar.gz"
       sha256 "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
     end
   end

@@ -3,28 +3,23 @@ class AasmProxy < Formula
   homepage "https://github.com/ai-agent-assembly/agent-assembly"
   license "MIT"
 
-  # Component-aware artifacts (ADR-014). The sha256 values below are placeholders
-  # resolved by the release automation when the first aasm-proxy component
-  # artifact is published (AAASM-3951); they are not hand-maintained.
-  on_macos do
-    on_arm do
-      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.2/aasm-proxy-v0.0.1-rc.2-darwin-arm64.tar.gz"
-      sha256 "5555555555555555555555555555555555555555555555555555555555555555"
-    end
-    on_intel do
-      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.2/aasm-proxy-v0.0.1-rc.2-darwin-amd64.tar.gz"
-      sha256 "6666666666666666666666666666666666666666666666666666666666666666"
-    end
-  end
+  # aasm-proxy ships as a Linux-only enforcement sidecar for now (AAASM-3951
+  # publishes proxy tarballs only for linux-{arm64,amd64}). depends_on :linux
+  # keeps macOS installs producing a clean "unavailable on this platform"
+  # message rather than a 404 on a non-existent darwin artifact.
+  depends_on :linux
 
+  # Component-aware artifacts (ADR-014 / AAASM-3951). sha256 values are copied
+  # from the release's SHA256SUMS by the release automation; do not hand-edit
+  # them without a matching upstream release.
   on_linux do
     on_arm do
-      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.2/aasm-proxy-v0.0.1-rc.2-linux-arm64.tar.gz"
-      sha256 "7777777777777777777777777777777777777777777777777777777777777777"
+      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.3/aasm-proxy-v0.0.1-rc.3-linux-arm64.tar.gz"
+      sha256 "1f7b95c71f05a3bb16baf398f66dcf2e7208efc783ff31c625634ad7b2ddecce"
     end
     on_intel do
-      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.2/aasm-proxy-v0.0.1-rc.2-linux-amd64.tar.gz"
-      sha256 "8888888888888888888888888888888888888888888888888888888888888888"
+      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.3/aasm-proxy-v0.0.1-rc.3-linux-amd64.tar.gz"
+      sha256 "60457171eaa499bcbfa0ce869aaf19865686851bcae5edf5fda62f7d335084c8"
     end
   end
 
