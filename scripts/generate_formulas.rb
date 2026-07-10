@@ -62,21 +62,25 @@ def rewrite_region(inner_lines, formula_path)
     ["#{indent}version \"#{VERSION}\"\n"]
   elsif line.strip.start_with?("url ")
     # Extract the quoted URL literal, then rewrite every `v<semver>` token
-    # inside it. Semver here is intentionally strict — three dot-separated
-    # digit groups plus an optional pre-release suffix — so it does not
-    # accidentally match `v#{version}` (Ruby interpolation), version-shaped
-    # substrings in a homepage tail, or a stray `v1` in a comment.
-    m = line.match(/\Aurl\s+"(?<url>[^"]+)"\s*\z/)
+    # inside it. Semver here is intentionally strict — `v<major>.<minor>.<patch>`
+    # optionally followed by a single dashed pre-release identifier of the shape
+    # `<alpha-word>` or `<alpha-word>.<digits>` (e.g. `rc`, `rc.2`, `beta.1`).
+    # This is deliberately tighter than the semver spec: it does NOT match
+    # `v#{version}` Ruby interpolations (kept intact for aasm.rb's URL style),
+    # and it will not greedily swallow file extensions like `.tar.gz` in
+    # component-artifact filenames such as `aasm-proxy-v0.0.1-rc.2.tar.gz`.
+    m = line.strip.match(/\Aurl\s+"(?<url>[^"]+)"\z/)
     unless m
       raise "#{formula_path}: url line does not match expected shape " \
             "'url \"<url>\"': #{line.inspect}"
     end
-    semver_token = /v\d+\.\d+\.\d+(?:-[a-zA-Z0-9.]+)?/
-    new_url = m[:url].gsub(semver_token, "v#{VERSION}")
-    unless new_url.include?("v#{VERSION}")
-      raise "#{formula_path}: url has no v<semver> segment to rewrite; " \
-            "expected at least one occurrence in #{m[:url].inspect}"
+    semver_token = /v\d+\.\d+\.\d+(?:-[a-zA-Z]+(?:\.\d+)?)?/
+    original_url = m[:url]
+    if !semver_token.match?(original_url) && !original_url.include?("v\#{version}")
+      raise "#{formula_path}: url contains no rewritable v<semver> segment " \
+            "and no `v\#{version}` interpolation: #{original_url.inspect}"
     end
+    new_url = original_url.gsub(semver_token, "v#{VERSION}")
     ["#{indent}url \"#{new_url}\"\n"]
   else
     raise "#{formula_path}: unrecognized managed line inside sentinels: " \
