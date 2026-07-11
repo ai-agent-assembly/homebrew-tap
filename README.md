@@ -128,7 +128,7 @@ aasm dashboard    # launch the operator TUI
 ```
 
 Full CLI documentation lives on the canonical docs site:
-<https://ai-agent-assembly.github.io/agent-assembly-docs/>.
+<https://docs.agent-assembly.com/>.
 
 ## Upgrade
 
@@ -271,7 +271,7 @@ documentation. Please follow the
 - **Core runtime & releases:** <https://github.com/ai-agent-assembly/agent-assembly>
   · [Releases](https://github.com/ai-agent-assembly/agent-assembly/releases)
 - **Organization profile:** <https://github.com/ai-agent-assembly>
-- **Documentation site:** <https://ai-agent-assembly.github.io/agent-assembly-docs/>
+- **Documentation site:** <https://docs.agent-assembly.com/>
 - **Release process:** [`agent-assembly` releases](https://github.com/ai-agent-assembly/agent-assembly/releases)
   and the upstream release workflow
 - **Issues / support:** <https://github.com/ai-agent-assembly/homebrew-tap/issues>
