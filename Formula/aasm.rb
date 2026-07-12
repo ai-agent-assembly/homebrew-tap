@@ -2,7 +2,7 @@ class Aasm < Formula
   desc "Agent Assembly CLI for the aasm runtime and dashboard"
   homepage "https://github.com/ai-agent-assembly/agent-assembly"
   # BEGIN GENERATED: version
-  version "0.0.1-rc.3"
+  version "0.0.1-rc.4"
   # END GENERATED: version
   license "MIT"
 
