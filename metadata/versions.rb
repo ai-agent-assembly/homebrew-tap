@@ -20,7 +20,7 @@ module AasmTapMetadata
   # Upstream release tag without the leading `v`. Formulas that build a URL
   # prepend `v` where needed (matching the release tag convention in
   # ai-agent-assembly/agent-assembly).
-  VERSION = "0.0.1-rc.3"
+  VERSION = "0.0.1-rc.4"
 
   # GitHub Releases download base URL. All per-platform tarballs live under
   # `<RELEASE_BASE_URL>/v<VERSION>/<artifact-name>.tar.gz`.
