@@ -44,13 +44,13 @@ class Aasm < Formula
     on_macos do
       on_arm do
         # BEGIN GENERATED: version
-        url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v#{version}/aasm-api-v#{version}-darwin-arm64.tar.gz"
+        url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.4/aasm-api-v0.0.1-rc.4-darwin-arm64.tar.gz"
         # END GENERATED: version
         sha256 "f63d08c0606d01d4e4b6fab67134e071df3a1116131e159f34d01f3ad1b939ae"
       end
       on_intel do
         # BEGIN GENERATED: version
-        url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v#{version}/aasm-api-v#{version}-darwin-amd64.tar.gz"
+        url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.4/aasm-api-v0.0.1-rc.4-darwin-amd64.tar.gz"
         # END GENERATED: version
         sha256 "92785b5d80bd58cda6cfa7f91ceb35bf0c9d15ad6e521510aa575c64bd96a607"
       end
@@ -58,13 +58,13 @@ class Aasm < Formula
     on_linux do
       on_arm do
         # BEGIN GENERATED: version
-        url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v#{version}/aasm-api-v#{version}-linux-arm64.tar.gz"
+        url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.4/aasm-api-v0.0.1-rc.4-linux-arm64.tar.gz"
         # END GENERATED: version
         sha256 "2bb5ec3f367d53c4232258627a6de88fc6c648e95120f9dcc3a50dbb6e60f93f"
       end
       on_intel do
         # BEGIN GENERATED: version
-        url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v#{version}/aasm-api-v#{version}-linux-amd64.tar.gz"
+        url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.4/aasm-api-v0.0.1-rc.4-linux-amd64.tar.gz"
         # END GENERATED: version
         sha256 "b86e5dc0a5c1354117988321a434df68791219a03520ffc6ae01f57f56fe1a0c"
       end
