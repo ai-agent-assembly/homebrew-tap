@@ -15,15 +15,15 @@ class AasmProxy < Formula
   on_linux do
     on_arm do
       # BEGIN GENERATED: version
-      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.4/aasm-proxy-v0.0.1-rc.4-linux-arm64.tar.gz"
+      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.5/aasm-proxy-v0.0.1-rc.5-linux-arm64.tar.gz"
       # END GENERATED: version
-      sha256 "56165f17bdb31c73bdb43524568075b5b1bfcb93dd5c2bdaa7784e526a84c106"
+      sha256 "4e2edf8bd690c848a926267cf3a7cea2de8ae1e190aaf81d9e93bfacf64da5a5"
     end
     on_intel do
       # BEGIN GENERATED: version
-      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.4/aasm-proxy-v0.0.1-rc.4-linux-amd64.tar.gz"
+      url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.5/aasm-proxy-v0.0.1-rc.5-linux-amd64.tar.gz"
       # END GENERATED: version
-      sha256 "f9746430c49be4a4c04605ca25afa2f5b1a1a082be80b4677ae2790be12e3ed3"
+      sha256 "16a0a84d0ed8356ac03d00d817022f6c32b3d6e41f0db6f1a1d3f40620cc4307"
     end
   end
 
