@@ -71,31 +71,56 @@ module FormulaGenerator
     if line.strip.start_with?("version ")
       ["#{indent}version \"#{VERSION}\"\n"]
     elsif line.strip.start_with?("url ")
-      # Extract the quoted URL literal, then rewrite every `v<semver>` token
-      # inside it. Semver here is intentionally strict — `v<major>.<minor>.<patch>`
-      # optionally followed by a single dashed pre-release identifier of the shape
+      # Extract the quoted URL literal, then rewrite the version token inside it.
+      # Two artifact URL shapes exist across the tap's formulae:
+      #
+      #   * GitHub-release shape — the version appears with a leading `v`
+      #     (`.../download/v0.0.1-rc.5/aasm-proxy-v0.0.1-rc.5-linux-arm64.tar.gz`).
+      #     Every `v<semver>` token is rewritten to `v<VERSION>`.
+      #   * crates.io shape — the version appears WITHOUT a leading `v`, because
+      #     the crate filename embeds the bare version
+      #     (`https://static.crates.io/crates/aa-ebpf/aa-ebpf-0.0.1-rc.5.crate`,
+      #     AAASM-4649/AAASM-4678). The bare `<semver>` token is rewritten to
+      #     `<VERSION>`. Without this branch the crate pin sits outside generator
+      #     management and silently lags each release.
+      #
+      # Semver here is intentionally strict — `<major>.<minor>.<patch>` optionally
+      # followed by a single dashed pre-release identifier of the shape
       # `<alpha-word>` or `<alpha-word>.<digits>` (e.g. `rc`, `rc.2`, `beta.1`).
       # This is deliberately tighter than the semver spec: it does NOT match
       # `v#{version}` Ruby interpolations (kept intact for aasm.rb's URL style),
-      # and it will not greedily swallow file extensions like `.tar.gz` in
-      # component-artifact filenames such as `aasm-proxy-v0.0.1-rc.2.tar.gz`.
+      # and it will not greedily swallow file extensions like `.tar.gz`/`.crate`
+      # in artifact filenames such as `aasm-proxy-v0.0.1-rc.2.tar.gz`.
       m = line.strip.match(/\Aurl\s+"(?<url>[^"]+)"\z/)
       unless m
         raise "#{formula_path}: url line does not match expected shape " \
               "'url \"<url>\"': #{line.inspect}"
       end
-      semver_token = /v\d+\.\d+\.\d+(?:-[a-zA-Z]+(?:\.\d+)?)?/
+      bare_semver = "\\d+\\.\\d+\\.\\d+(?:-[a-zA-Z]+(?:\\.\\d+)?)?"
+      v_semver_token = /v#{bare_semver}/
+      bare_semver_token = /#{bare_semver}/
       original_url = m[:url]
       # `String#exclude?` (Homebrew/NegateInclude's suggested replacement) is
       # an ActiveSupport addition loaded at brew-style time; this generator
       # runs under vanilla Ruby (see CI: `ruby scripts/...`) so we can only
       # rely on stdlib `.include?`. Disabling the cop here keeps the code
       # portable across the two runtimes.
-      if !semver_token.match?(original_url) && !original_url.include?("v\#{version}") # rubocop:disable Homebrew/NegateInclude
-        raise "#{formula_path}: url contains no rewritable v<semver> segment " \
-              "and no `v\#{version}` interpolation: #{original_url.inspect}"
-      end
-      new_url = original_url.gsub(semver_token, "v#{VERSION}")
+      new_url =
+        if v_semver_token.match?(original_url)
+          # GitHub-release shape. Checked first so a `v`-prefixed URL is never
+          # matched by the bare-semver token (which would drop the `v`).
+          original_url.gsub(v_semver_token, "v#{VERSION}")
+        elsif original_url.include?("v\#{version}") # rubocop:disable Homebrew/NegateInclude
+          # aasm.rb interpolates `v#{version}`; the literal has no version digits
+          # to rewrite, so it is preserved verbatim.
+          original_url
+        elsif bare_semver_token.match?(original_url)
+          # crates.io shape (no leading `v`).
+          original_url.gsub(bare_semver_token, VERSION)
+        else
+          raise "#{formula_path}: url contains no rewritable <semver> segment " \
+                "and no `v\#{version}` interpolation: #{original_url.inspect}"
+        end
       ["#{indent}url \"#{new_url}\"\n"]
     else
       raise "#{formula_path}: unrecognized managed line inside sentinels: " \
