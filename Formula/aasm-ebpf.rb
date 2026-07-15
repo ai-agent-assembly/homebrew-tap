@@ -2,10 +2,17 @@ class AasmEbpf < Formula
   desc "Kernel eBPF enforcement component for Agent Assembly"
   homepage "https://github.com/ai-agent-assembly/agent-assembly"
   # Real, resolvable source: the aa-ebpf crate published on crates.io at the
-  # rc.4 tag. This is the crate source, not a prebuilt binary — the formula is
+  # rc.5 tag. This is the crate source, not a prebuilt binary — the formula is
   # disabled, so nothing is fetched or built until a real brew artifact exists.
-  url "https://static.crates.io/crates/aa-ebpf/aa-ebpf-0.0.1-rc.4.crate"
-  sha256 "9a9d86ca03c9a6317091fb63d4bfd0a93dabe4f1789163b13b556afa7aaae639"
+  #
+  # NOTE (AAASM-4649): this pin is NOT yet managed by scripts/generate_formulas.rb.
+  # The crates.io filename embeds the version WITHOUT a leading `v`
+  # (`aa-ebpf-0.0.1-rc.5.crate`), which matches neither of the generator's two
+  # rewrite shapes (a literal `v<semver>` token or a `v#{version}` interpolation),
+  # so it must be bumped by hand each release and can silently lag. Bringing it
+  # under the sentinels needs a generator change — tracked as a follow-up.
+  url "https://static.crates.io/crates/aa-ebpf/aa-ebpf-0.0.1-rc.5.crate"
+  sha256 "d7260ad2b771d41653dbfd107af8be83e56282233337e1aa4885935005aa4cb7"
   license "MIT"
 
   # The eBPF component is the privileged Linux CAP_BPF loader daemon
