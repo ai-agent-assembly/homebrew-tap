@@ -103,14 +103,13 @@ module FormulaGenerator
       # `String#exclude?` (Homebrew/NegateInclude's suggested replacement) is
       # an ActiveSupport addition loaded at brew-style time; this generator
       # runs under vanilla Ruby (see CI: `ruby scripts/...`) so we can only
-      # rely on stdlib `.include?`. Disabling the cop here keeps the code
-      # portable across the two runtimes.
+      # rely on stdlib `.include?`.
       new_url =
         if v_semver_token.match?(original_url)
           # GitHub-release shape. Checked first so a `v`-prefixed URL is never
           # matched by the bare-semver token (which would drop the `v`).
           original_url.gsub(v_semver_token, "v#{VERSION}")
-        elsif original_url.include?("v\#{version}") # rubocop:disable Homebrew/NegateInclude
+        elsif original_url.include?("v\#{version}")
           # aasm.rb interpolates `v#{version}`; the literal has no version digits
           # to rewrite, so it is preserved verbatim.
           original_url
