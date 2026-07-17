@@ -7,7 +7,7 @@ class AasmBundle < Formula
   # url must appear before `version` in formula component order. The sha256 is a
   # placeholder resolved by the release automation and is not hand-maintained.
   # BEGIN GENERATED: version
-  url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.5/aasm-bundle-v0.0.1-rc.5.tar.gz"
+  url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.6/aasm-bundle-v0.0.1-rc.6.tar.gz"
   # END GENERATED: version
   sha256 "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
   license "MIT"
