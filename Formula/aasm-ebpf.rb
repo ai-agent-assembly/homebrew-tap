@@ -16,7 +16,7 @@ class AasmEbpf < Formula
   # BEGIN GENERATED: version
   url "https://static.crates.io/crates/aa-ebpf/aa-ebpf-0.0.1-rc.6.crate"
   # END GENERATED: version
-  sha256 "d7260ad2b771d41653dbfd107af8be83e56282233337e1aa4885935005aa4cb7"
+  sha256 "a7892b4e8eb50c74f5bf6528bf846c8a0a535eb4ceb52b090fbdb30a2be0db99"
   license "MIT"
 
   # The eBPF component is the privileged Linux CAP_BPF loader daemon
