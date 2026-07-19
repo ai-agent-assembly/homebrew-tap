@@ -21,7 +21,7 @@ class AasmBundle < Formula
   # aasm-bundle-<version>.tar.gz asset and its real sha256 is set here
   # (AAASM-4879).
   disable! date:    "2026-07-19",
-           because: "no aasm-bundle release artifact has been published yet; re-enable once a real aasm-bundle-<version>.tar.gz asset and sha256 exist"
+           because: "no aasm-bundle release artifact has been published yet (AAASM-4879)"
 
   # Meta/convenience formula: installs no binaries of its own; it pulls the
   # component formulae so `brew install aasm-bundle` sets up a local stack in one
