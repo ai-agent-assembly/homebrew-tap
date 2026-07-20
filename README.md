@@ -73,9 +73,9 @@ you install exactly what you want and nothing starts automatically.
 | --- | --- | --- | --- |
 | `aasm` | `aasm` CLI | macOS · Linux | — |
 | `aasm-runtime` | local runtime daemon | macOS · Linux | `brew services` (opt-in) |
-| `aasm-proxy` | sidecar proxy enforcement | macOS · Linux | — |
+| `aasm-proxy` | sidecar proxy enforcement | **Linux only** | — |
 | `aasm-ebpf` | eBPF kernel enforcement | **Linux only** | — |
-| `aasm-bundle` | CLI + runtime + proxy (meta) | macOS · Linux | — |
+| `aasm-bundle` | CLI + runtime + proxy (meta) | **Linux only** | — |
 
 ```sh
 brew install ai-agent-assembly/tap/aasm-runtime
