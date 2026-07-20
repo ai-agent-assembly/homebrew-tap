@@ -15,15 +15,16 @@ and installs it onto your `PATH`. Additional components — runtime, proxy, and
 eBPF — are separate formulae (see [Components](#components)).
 
 > [!NOTE]
-> **Current state — pre-release / bootstrap.**
-> The tap currently tracks **pre-release (beta) builds** of `aasm`. The formula
-> is pinned to `v0.0.1-beta.1`, and its `sha256` values are verified against the
-> real release artifacts (see [Checksum readiness](#checksum-readiness)).
+> **Current state — pre-release (release candidate).**
+> The tap tracks **pre-release (release-candidate) builds** of `aasm`. Every
+> formula is pinned to **`v0.0.1-rc.6`** via the shared version source of truth
+> ([`metadata/versions.rb`](metadata/versions.rb)), and each `sha256` is verified
+> against the real release artifacts (see [Checksum readiness](#checksum-readiness)).
+> The `aasm` CLI, `aasm-runtime`, and `aasm-proxy` all install from published
+> `v0.0.1-rc.6` artifacts today; `aasm-bundle` and `aasm-ebpf` are intentionally
+> disabled until their artifacts ship (see [Components](#components)).
 > There is **no stable (`vX.Y.0`) release yet**, so installs pull a pre-release
-> binary. Ongoing tap and installer hardening — including the automated
-> checksum-sync workflow — is tracked under
-> [AAASM-1201](https://lightning-dust-mite.atlassian.net/browse/AAASM-1201).
-> Expect breaking changes until the first stable tag is cut.
+> binary. Expect breaking changes until the first stable tag is cut.
 
 ## Install
 
@@ -92,11 +93,14 @@ brew services stop  aasm-runtime
 ```
 
 > [!NOTE]
-> The runtime/proxy/eBPF/bundle formulae target the component-aware release
+> `aasm-runtime` and `aasm-proxy` install from the component-aware release
 > artifacts tracked under
-> [AAASM-3951](https://lightning-dust-mite.atlassian.net/browse/AAASM-3951). Their
-> `sha256` values are filled in by the release automation when the first component
-> artifacts ship; until then, only `aasm` (CLI) installs from a published artifact.
+> [AAASM-3951](https://lightning-dust-mite.atlassian.net/browse/AAASM-3951), with
+> `sha256` values verified against the published `v0.0.1-rc.6` assets. The
+> `aasm-bundle` and `aasm-ebpf` formulae stay **disabled** until their artifacts
+> ship — `brew install` reports a clear "disabled" message rather than a 404
+> (bundle: [AAASM-4879](https://lightning-dust-mite.atlassian.net/browse/AAASM-4879);
+> eBPF: [AAASM-4325](https://lightning-dust-mite.atlassian.net/browse/AAASM-4325)).
 
 ## Supported platforms
 
@@ -139,7 +143,7 @@ brew upgrade aasm
 
 `brew update` refreshes this tap; `brew upgrade aasm` installs the newest
 formula version. While the tap tracks pre-releases, each upgrade may pull a new
-beta build.
+release-candidate build.
 
 ## Uninstall
 
@@ -167,7 +171,7 @@ Still stuck? Collect `brew config` and `brew install --verbose aasm` output and
 ## Formula details
 
 - **Formula path:** [`Formula/aasm.rb`](Formula/aasm.rb)
-- **Formula version:** `0.0.1-beta.1` (pre-release)
+- **Formula version:** `0.0.1-rc.6` (pre-release / release candidate)
 - **Class:** `Aasm` (Homebrew maps the file `aasm.rb` to `aasm`)
 - **License:** MIT (matches this tap; the core runtime is Apache-2.0)
 - **Install:** drops the `aasm` binary into Homebrew's `bin`
@@ -177,16 +181,18 @@ Still stuck? Collect `brew config` and `brew install --verbose aasm` output and
 
 The `sha256` value for each platform artifact in `Formula/aasm.rb` is verified
 against the `SHA256SUMS` manifest published with the upstream
-[`v0.0.1-beta.1` release](https://github.com/ai-agent-assembly/agent-assembly/releases/tag/v0.0.1-beta.1).
+[`v0.0.1-rc.6` release](https://github.com/ai-agent-assembly/agent-assembly/releases/tag/v0.0.1-rc.6).
 All four platform checksums are present and match the published assets, so the
-formula is installable today for the beta.
+formula is installable today. The `aasm-runtime` and `aasm-proxy` formulae carry
+the same verified, release-matched checksums for their published `v0.0.1-rc.6`
+artifacts.
 
 ### Latest vs stable
 
 | Channel | State |
 | --- | --- |
-| **Pre-release (beta)** | **Active.** Formula pinned to `v0.0.1-beta.1`. This is what installs today. |
-| **Stable (`vX.Y.0`)** | **Not yet cut.** No stable tag exists. When the first stable release ships, the formula will be re-pointed to it and this section updated. |
+| **Pre-release (release candidate)** | **Active.** Every formula pinned to `v0.0.1-rc.6`. This is what installs today. |
+| **Stable (`vX.Y.0`)** | **Not yet cut.** No stable tag exists. When the first stable release ships, the formulae will be re-pointed to it and this section updated. |
 
 ## Release & checksum update workflow
 
