@@ -48,8 +48,8 @@ suspended, so **validate locally** rather than waiting on CI.
 ## Repo-specific gotchas
 
 - **Push remote is `remote`** (→ canonical `ai-agent-assembly/homebrew-agent-assembly`),
-  not `origin` (a personal fork). Scope changes against `remote/master`.
-- **Default branch is `master`**; PR base is always `master`. Never `--no-verify`,
+  not `origin` (a personal fork). Scope changes against `remote/main`.
+- **Default branch is `main`**; PR base is always `main`. Never `--no-verify`,
   never force-push.
 
 ## Project policy
