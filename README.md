@@ -282,7 +282,7 @@ documentation. Please follow the
   and the upstream release workflow
 - **Issues / support:** <https://github.com/ai-agent-assembly/homebrew-tap/issues>
 - **Security:** report vulnerabilities to **security@agent-assembly.dev**
-  (see the org [security policy](https://github.com/ai-agent-assembly/.github/blob/master/SECURITY.md))
+  (see the org [security policy](https://github.com/ai-agent-assembly/.github/blob/main/SECURITY.md))
 
 ## License
 
