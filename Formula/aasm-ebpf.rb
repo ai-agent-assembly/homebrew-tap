@@ -14,7 +14,7 @@ class AasmEbpf < Formula
   # owned by release automation and bumped from the crate's checksum on release
   # (AAASM-3951), so it must still be refreshed when the version changes.
   # BEGIN GENERATED: version
-  url "https://static.crates.io/crates/aa-ebpf/aa-ebpf-0.0.1-rc.6.crate"
+  url "https://static.crates.io/crates/aa-ebpf/aa-ebpf-0.0.1-rc.7.crate"
   # END GENERATED: version
   sha256 "a7892b4e8eb50c74f5bf6528bf846c8a0a535eb4ceb52b090fbdb30a2be0db99"
   license "MIT"
