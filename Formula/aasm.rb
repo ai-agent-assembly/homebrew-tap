@@ -2,7 +2,7 @@ class Aasm < Formula
   desc "Agent Assembly CLI for the aasm runtime and dashboard"
   homepage "https://github.com/ai-agent-assembly/agent-assembly"
   # BEGIN GENERATED: version
-  version "0.0.1-rc.6"
+  version "0.0.1-rc.7"
   # END GENERATED: version
   license "MIT"
 
@@ -11,13 +11,13 @@ class Aasm < Formula
       # BEGIN GENERATED: version
       url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v#{version}/aasm-aarch64-apple-darwin.tar.gz"
       # END GENERATED: version
-      sha256 "613a381beb0a5157bacf6bb4150d46407704058efffdc635c1131849fbe1fd2a"
+      sha256 "c4c5c21d84c366b41a1a712c1b199cee53b9f7b543c6c1cd7e81187e37cf54c8"
     end
     on_intel do
       # BEGIN GENERATED: version
       url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v#{version}/aasm-x86_64-apple-darwin.tar.gz"
       # END GENERATED: version
-      sha256 "937914cbf86359db8a329c8abdcadd1615e889745f44c317d359cfc7e62f2591"
+      sha256 "c26dbb2f9361f13f218358b1a08ce6c5a27473092820cc2b1cda2ca70441f874"
     end
   end
 
@@ -26,13 +26,13 @@ class Aasm < Formula
       # BEGIN GENERATED: version
       url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v#{version}/aasm-aarch64-unknown-linux-gnu.tar.gz"
       # END GENERATED: version
-      sha256 "bc2bc53b8755f3045ca532e32c167ff0685f5bba6bd8ddca70d081c66c3d042e"
+      sha256 "3bd1b67a964d4edcf73c1229202b8a9f0b59c347e7b1022471b31214604bd9ef"
     end
     on_intel do
       # BEGIN GENERATED: version
       url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v#{version}/aasm-x86_64-unknown-linux-gnu.tar.gz"
       # END GENERATED: version
-      sha256 "9500ca1568ff5b303735116febea61297f5c8d1a0078120bc4b15c108f30aa97"
+      sha256 "91f6d0655e4f4d6e2e65652548fb84b929acca0318c9b46818d1a55fa0117cd6"
     end
   end
 
@@ -44,29 +44,29 @@ class Aasm < Formula
     on_macos do
       on_arm do
         # BEGIN GENERATED: version
-        url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.6/aasm-api-v0.0.1-rc.6-darwin-arm64.tar.gz"
+        url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.7/aasm-api-v0.0.1-rc.7-darwin-arm64.tar.gz"
         # END GENERATED: version
-        sha256 "5052ee6202edb335149d63c87b13e11d9c4db960d8d8ee9b3f5a515d693fc4cd"
+        sha256 "1f615bedead45dd3550907be10917bad3d03ffbd41ae801c76e658098c5bfa12"
       end
       on_intel do
         # BEGIN GENERATED: version
-        url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.6/aasm-api-v0.0.1-rc.6-darwin-amd64.tar.gz"
+        url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.7/aasm-api-v0.0.1-rc.7-darwin-amd64.tar.gz"
         # END GENERATED: version
-        sha256 "a3ae926b2b1044758aa6ee132c6bb43a344b85732ae5c46d7084ae2823157f98"
+        sha256 "578a3c677a8ee1df4e82c4f4f3a660c35971a0da21b6598262e341a98278f85c"
       end
     end
     on_linux do
       on_arm do
         # BEGIN GENERATED: version
-        url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.6/aasm-api-v0.0.1-rc.6-linux-arm64.tar.gz"
+        url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.7/aasm-api-v0.0.1-rc.7-linux-arm64.tar.gz"
         # END GENERATED: version
-        sha256 "674f5d3e95521fc00424123713b9777747f42eb1b395f191b4e14d4a65f9d2ec"
+        sha256 "c5ab94539d2ff21aaea84675e8a76ed55a5a5521003983b044bf0225a88f3d70"
       end
       on_intel do
         # BEGIN GENERATED: version
-        url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.6/aasm-api-v0.0.1-rc.6-linux-amd64.tar.gz"
+        url "https://github.com/ai-agent-assembly/agent-assembly/releases/download/v0.0.1-rc.7/aasm-api-v0.0.1-rc.7-linux-amd64.tar.gz"
         # END GENERATED: version
-        sha256 "a0a93a6ecf619b379fd5e0cc60a3fa1f73dbaa84886274e1004a4ed5848d4955"
+        sha256 "b8a0ee8b95a94c92ae13e3bed761e3fd4ca1c5d80bd654dac0dec54aa37fdea6"
       end
     end
   end
